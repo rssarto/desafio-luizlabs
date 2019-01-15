@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -23,7 +22,6 @@ public class GameFileParser implements CommandLineRunner {
 	private static final Logger logger = LoggerFactory.getLogger(GameFileParser.class);
 	
 	private static final String INIT_GAME_MARKER = "InitGame:";
-	private static final String END_GAME_MARKER = "ShutdownGame:";
 	private static final String CLIENT_USER_INFO_MARKER = "ClientUserinfoChanged:";
 	private static final String KILL_MARKER = "Kill:";
 	private static final String WORLD_MARKER = "<world>";
@@ -33,12 +31,6 @@ public class GameFileParser implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		logger.info("[GameFileParser] - nonononononono nonononononono nononononononono nononononononononono nonononononononono");
-		
-		if( Objects.nonNull(gameService) ) {
-			logger.info("[GameFileParser] - gameService is not null.");
-		}
-		
 		InputStream is = getClass().getResourceAsStream("/games.log");
 		if( is != null ) {
 			Reader reader = new InputStreamReader(is);
@@ -50,22 +42,25 @@ public class GameFileParser implements CommandLineRunner {
 				
 				while( readLine != null ) {
 					logger.info(readLine);
-					
-					StringBuilder sb = new StringBuilder(readLine);
-					if( StringUtils.contains(sb.toString(), INIT_GAME_MARKER) ) {
-						if( game != null ) {
-							this.gameService.add(game);
+					if (isReadableLine(readLine) ){
+						StringBuilder sb = new StringBuilder(readLine);
+						if( StringUtils.contains(sb.toString(), INIT_GAME_MARKER) ) {
+							if( game != null ) {
+								this.gameService.add(game);
+							}
+							game = new Game();
 						}
-						game = new Game();
-					}
-					
-					String playerName = getPlayerName(sb.toString());
-					if( StringUtils.isNotBlank(playerName) ) {
-						game.addPlayer(playerName);
-					} else {
-						Player player = getKill(sb.toString());
-						if( player != null ) {
-							game.addKill(player.getName(), player.getKill());
+						
+						if( isDataLine(readLine) ) {
+							String playerName = getPlayerName(sb.toString());
+							if( StringUtils.isNotBlank(playerName) ) {
+								game.addPlayer(playerName);
+							} else {
+								Player player = getKill(sb.toString());
+								if( player != null ) {
+									game.addKill(player.getName(), player.getKill());
+								}
+							}
 						}
 					}
 					
@@ -107,6 +102,14 @@ public class GameFileParser implements CommandLineRunner {
 		}
 		
 		return null;
+	}
+	
+	private boolean isReadableLine(String line) {
+		return line.contains(INIT_GAME_MARKER) || isDataLine(line);
+	}
+	
+	private boolean isDataLine(String line) {
+		return line.contains(CLIENT_USER_INFO_MARKER) || line.contains(KILL_MARKER);
 	}
 
 }

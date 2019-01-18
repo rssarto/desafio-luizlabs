@@ -4,10 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.lang.reflect.Type;
+import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,8 +16,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.desafioluizalabs.games.domain.Game;
 import com.desafioluizalabs.games.services.GameService;
 import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

@@ -21,6 +21,7 @@ public class GameFileParser implements CommandLineRunner {
 	
 	private static final Logger logger = LoggerFactory.getLogger(GameFileParser.class);
 	
+	private static final String LOG_FILE_PATH = "/games.log";
 	private static final String INIT_GAME_MARKER = "InitGame:";
 	private static final String CLIENT_USER_INFO_MARKER = "ClientUserinfoChanged:";
 	private static final String KILL_MARKER = "Kill:";
@@ -31,7 +32,7 @@ public class GameFileParser implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		InputStream is = getClass().getResourceAsStream("/games.log");
+		InputStream is = getClass().getResourceAsStream(LOG_FILE_PATH);
 		if( is != null ) {
 			Reader reader = new InputStreamReader(is);
 			try( BufferedReader br = new BufferedReader(reader) ) {

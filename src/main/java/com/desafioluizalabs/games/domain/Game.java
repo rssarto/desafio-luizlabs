@@ -3,6 +3,7 @@ package com.desafioluizalabs.games.domain;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 public class Game {
@@ -56,5 +57,79 @@ public class Game {
 			kill = currentKills;
 		} 
 		kills.put(player, kill);
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		
+        if (other == this) { 
+            return true; 
+        } 
+        
+        if (!(other instanceof Game)) { 
+            return false; 
+        }        
+  		
+		final Game otherGame = (Game) other;
+		
+		if(otherGame.getTotal_kills() != this.getTotal_kills()) {
+			return false;
+		}
+		
+		if( this.getPlayers() != null ) {
+			if( otherGame.getPlayers() != null ) {
+				if( this.getPlayers().size() != otherGame.getPlayers().size() ) {
+					return false;
+				}
+				
+				for( String playerName : this.getPlayers() ) {
+					if( !otherGame.getPlayers().contains(playerName) ) {
+						return false;
+					}
+				}
+			}else {
+				return false;
+			}
+		}else {
+			if( otherGame.getPlayers() != null ) {
+				return false;
+			}
+		}
+		
+		if( this.getKills() != null ) {
+			if( otherGame.getKills() != null ) {
+				if( this.getKills().size() != otherGame.getKills().size() ) {
+					return false;
+				}
+				
+				for( Entry<String, Integer> entry : this.getKills().entrySet() ) {
+					if( otherGame.getKills().containsKey(entry.getKey()) ) {
+						if( entry.getValue() != null ) {
+							if( otherGame.getKills().get(entry.getKey()) != null ) {
+								if( entry.getValue().intValue() != otherGame.getKills().get(entry.getKey()).intValue() ) {
+									return false;
+								}
+							}else {
+								return false;
+							}
+						}else {
+							if( otherGame.getKills().get(entry.getKey()) != null ) {
+								return false;
+							}
+						}
+					}else {
+						return false;
+					}
+				}
+			}else {
+				return false;
+			}
+		}else {
+			if( otherGame.getKills() != null ) {
+				return false;
+			}
+		}
+		
+		return true;
 	}
 }

@@ -16,8 +16,9 @@ public class GameServiceImpl implements GameService {
 	private static AtomicLong counter = new AtomicLong();
 
 	@Override
-	public void add(Game game) {
+	public Long add(Game game) {
 		games.put(getGameId(counter.incrementAndGet()), game);
+		return counter.get();
 	}
 
 	@Override

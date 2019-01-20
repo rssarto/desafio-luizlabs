@@ -1,1 +1,8 @@
 # desafio-luizlabs
+
+
+HATEOAS
+
+LOG
+
+DOCUMENTATION SWAGGER

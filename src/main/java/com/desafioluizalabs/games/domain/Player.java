@@ -30,5 +30,4 @@ public class Player {
 	public void setKill(Integer kill) {
 		this.kill = kill;
 	}
-	
 }

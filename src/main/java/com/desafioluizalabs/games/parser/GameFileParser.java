@@ -10,12 +10,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import com.desafioluizalabs.games.domain.Game;
 import com.desafioluizalabs.games.domain.Player;
 import com.desafioluizalabs.games.services.GameService;
 
+@Profile("!test")
 @Component
 public class GameFileParser implements CommandLineRunner {
 	
@@ -27,8 +29,11 @@ public class GameFileParser implements CommandLineRunner {
 	private static final String KILL_MARKER = "Kill:";
 	private static final String WORLD_MARKER = "<world>";
 	
-	@Autowired
 	private GameService gameService;
+	
+	public GameFileParser(@Autowired GameService gameService) {
+		this.gameService = gameService;
+	}
 
 	@Override
 	public void run(String... args) throws Exception {

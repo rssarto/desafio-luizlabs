@@ -11,7 +11,7 @@
 
 -> mvn clean package
 
-# Como rodar a aplicação
+# Executando a aplicação
 <p>Após realizar o build da aplicação execute o comando abaixo para iniciar a aplicação:</p>
 
 -> java -jar ./target/desafio-luizalabs-0.0.1-SNAPSHOT.jar
@@ -29,7 +29,7 @@ chama a camada de persistência localizada na classe GameServiceImpl.</p>
 <p>Foi aplicado o conceito HATEOAS (Hypermedia as the engine of application state) para facilitar
 o acesso aos recursos oferecidos na API.</p>
 
-# Swagger API documentation
+# Documentação da API com Swagger
 <p>Uma vez que a aplicação estiver rodando é possível acessar a documentação da API REST através do link abaixo:</p>
 
 <a href="http://localhost:8080/swagger-ui.html">http://localhost:8080/swagger-ui.html</a>

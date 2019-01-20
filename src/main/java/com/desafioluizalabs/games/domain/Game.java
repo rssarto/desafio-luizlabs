@@ -1,5 +1,7 @@
 package com.desafioluizalabs.games.domain;
 
+import static com.desafioluizalabs.util.JsonUtil.*;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -131,5 +133,10 @@ public class Game {
 		}
 		
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return toJson(this);
 	}
 }

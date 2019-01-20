@@ -4,9 +4,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.desafioluizalabs.games.domain.Game;
+import com.desafioluizalabs.games.parser.GameFileParser;
 
 /**
  * Responsavel por manipular o repositorio de Jogos ({@link Game})
@@ -16,9 +19,11 @@ import com.desafioluizalabs.games.domain.Game;
 @Service
 public class GameServiceImpl implements GameService {
 	
-	private static final Map<String, Game> games = new LinkedHashMap<>();
+	private static final Logger LOGGER = LoggerFactory.getLogger(GameFileParser.class);
+	
+	private static final Map<String, Game> GAMES = new LinkedHashMap<>();
 	private static final String ID_PREFIX = "game_";
-	private static AtomicLong counter = new AtomicLong();
+	private static AtomicLong COUNTER = new AtomicLong();
 
 	/**
 	 * Adiciona um novo jogo ao repositorio.
@@ -26,8 +31,9 @@ public class GameServiceImpl implements GameService {
 	 */
 	@Override
 	public Long add(Game game) {
-		games.put(getGameId(counter.incrementAndGet()), game);
-		return counter.get();
+		LOGGER.info("Adicionando game: " + game.toString());
+		GAMES.put(getGameId(COUNTER.incrementAndGet()), game);
+		return COUNTER.get();
 	}
 
 	/**
@@ -37,7 +43,7 @@ public class GameServiceImpl implements GameService {
 	 */
 	@Override
 	public Game getById(long id) {
-		return games.get(getGameId(id));
+		return GAMES.get(getGameId(id));
 	}
 
 	/**
@@ -46,7 +52,7 @@ public class GameServiceImpl implements GameService {
 	 */
 	@Override
 	public Map<String, Game> getAll() {
-		return games;
+		return GAMES;
 	}
 	
 	private String getGameId(long id) {

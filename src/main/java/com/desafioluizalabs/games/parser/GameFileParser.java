@@ -17,11 +17,17 @@ import com.desafioluizalabs.games.domain.Game;
 import com.desafioluizalabs.games.domain.Player;
 import com.desafioluizalabs.games.services.GameService;
 
+/**
+ * Responsavel por ler o arquivo de log, recuperar os jogos e chamar o modulo de persistencia - {@link GameService}
+ * Este objeto eh carregado apos o container ser carregado. *  
+ * @author rssarto
+ *
+ */
 @Profile("!test")
 @Component
 public class GameFileParser implements CommandLineRunner {
 	
-	private static final Logger logger = LoggerFactory.getLogger(GameFileParser.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(GameFileParser.class);
 	
 	private static final String LOG_FILE_PATH = "/games.log";
 	private static final String INIT_GAME_MARKER = "InitGame:";
@@ -38,6 +44,7 @@ public class GameFileParser implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		InputStream is = getClass().getResourceAsStream(LOG_FILE_PATH);
+		LOGGER.info("Iniciando leitura do arquivo de log");
 		if( is != null ) {
 			Reader reader = new InputStreamReader(is);
 			try( BufferedReader br = new BufferedReader(reader) ) {
@@ -47,7 +54,6 @@ public class GameFileParser implements CommandLineRunner {
 				String readLine = br.readLine();
 				
 				while( readLine != null ) {
-					logger.info(readLine);
 					if (isReadableLine(readLine) ){
 						StringBuilder sb = new StringBuilder(readLine);
 						if( StringUtils.contains(sb.toString(), INIT_GAME_MARKER) ) {
@@ -76,6 +82,8 @@ public class GameFileParser implements CommandLineRunner {
 						this.gameService.add(game);
 					}
 				}
+			}finally {
+				LOGGER.info("Leitura do arquivo concluida.");
 			}
 		}
 	}

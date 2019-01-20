@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.desafioluizalabs.games.domain.Game;
 import com.desafioluizalabs.games.services.GameService;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 @RestController
 @RequestMapping(value="/api")
 public class GamesController {
@@ -29,6 +32,7 @@ public class GamesController {
 	@Autowired
 	private GameService gameService;
 	
+	@ApiOperation(value="Retorna todos os jogos existentes.")
 	@ResponseStatus(code=HttpStatus.NOT_FOUND)
 	@GetMapping("/v1/game")
 	public ResponseEntity<Map<String, Resource<Game>>> getAll(){
@@ -43,9 +47,10 @@ public class GamesController {
 		return null;
 	}
 	
+	@ApiOperation(value="Retorna um jogo de acordo com o Id.")
 	@ResponseStatus(code=HttpStatus.NOT_FOUND)
 	@GetMapping("/v1/game/{id}")
-	public ResponseEntity<Resource<Game>> getById(@PathVariable(name="id") long id){
+	public ResponseEntity<Resource<Game>> getById(@ApiParam(value="Id do jogo para pesquisa.") @PathVariable(name="id") long id){
 		Game game = this.gameService.getById(id);
 		if( game != null ) {
 			return new ResponseEntity<Resource<Game>>(this.createResource(game, id), HttpStatus.OK);
